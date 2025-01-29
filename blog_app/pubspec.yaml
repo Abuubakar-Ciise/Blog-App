@@ -47,6 +47,7 @@ dependencies:
   path: ^1.9.0
   web_socket_channel: ^2.2.0
   intl: ^0.20.1
+  lottie: ^3.3.1
 
 dev_dependencies:
   flutter_test:

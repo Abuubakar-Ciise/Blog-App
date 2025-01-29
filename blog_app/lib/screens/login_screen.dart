@@ -4,37 +4,29 @@ import '../controllers/auth_controller.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_text_field.dart';
 
-class RegisterScreen extends StatelessWidget {
+class LoginScreen extends StatelessWidget {
   final AuthController authController = Get.put(AuthController());
-  final TextEditingController usernameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  RegisterScreen({super.key});
+  LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blueAccent,
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 80.0),
+        padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 100.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              'Create Account',
+              'Welcome Back',
               style: TextStyle(
                 fontSize: 32.0,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
-            ),
-            SizedBox(height: 20),
-            CustomTextField(
-              controller: usernameController,
-              label: 'Username',
-              obscureText: false,
-              icon: Icons.person,
             ),
             SizedBox(height: 20),
             CustomTextField(
@@ -55,10 +47,9 @@ class RegisterScreen extends StatelessWidget {
               () => authController.isLoading.value
                   ? CircularProgressIndicator()
                   : CustomButton(
-                      label: 'Register',
+                      label: 'Login',
                       onPressed: () async {
-                        await authController.register(
-                          usernameController.text,
+                        await authController.login(
                           emailController.text,
                           passwordController.text,
                         );
@@ -67,9 +58,9 @@ class RegisterScreen extends StatelessWidget {
             ),
             SizedBox(height: 20),
             GestureDetector(
-              onTap: () => Get.toNamed('/login'), // Navigate to Login screen
+              onTap: () => Get.toNamed('/register'),
               child: Text(
-                'Already have an account? Login here',
+                'Don\'t have an account? Register here',
                 style: TextStyle(color: Colors.white),
               ),
             ),
