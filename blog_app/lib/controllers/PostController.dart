@@ -1,7 +1,7 @@
-import 'package:blogapp/models/comment_count_model.dart';
-import 'package:blogapp/models/post_model.dart';
-import 'package:blogapp/services/api_service.dart';
-import 'package:blogapp/services/userprofile.dart';
+import 'package:blog_app/model/comment_count_model.dart';
+import 'package:blog_app/model/post_model.dart';
+import 'package:blog_app/services/api_service.dart';
+import 'package:blog_app/services/userprofile.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
