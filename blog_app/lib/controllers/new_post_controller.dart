@@ -1,7 +1,6 @@
 import 'package:blog_app/controllers/PostController.dart';
-import 'package:blogapp/controllers/PostController.dart';
+import 'package:blog_app/services/api_service.dart';
 import 'package:get/get.dart';
-import 'package:blogapp/services/api_service.dart';
 
 class NewPostController extends GetxController {
   final PostController postController = Get.find<PostController>();

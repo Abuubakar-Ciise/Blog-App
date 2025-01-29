@@ -1,8 +1,8 @@
-import 'package:blogapp/controllers/PostController.dart';
-import 'package:blogapp/models/comment.dart';
+import 'package:blog_app/controllers/PostController.dart';
+import 'package:blog_app/model/comment.dart';
+import 'package:blog_app/services/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:blogapp/services/api_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CommentController extends GetxController {
