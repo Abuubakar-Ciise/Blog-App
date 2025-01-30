@@ -48,7 +48,7 @@ A full-stack blogging platform built with Flutter (frontend) and Node.js + Mongo
 
 1. **Clone Repository**
    ```bash
-   git clone your-repo-url
+   git clone https://github.com/Abuubakar-Ciise/Blog-App.git
    cd backend
    ```
 
