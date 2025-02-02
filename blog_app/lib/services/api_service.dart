@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:blog_app/model/comment.dart';
 import 'package:blog_app/model/comment_count_model.dart';
 import 'package:blog_app/model/post_model.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
@@ -11,8 +12,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiService {
   // static const String baseUrl = 'http://192.168.100.132:3000/api';
-  static const String baseUrl = 'http://192.168.100.146:3000/api';
-  // static const String baseUrl ='http://192.168.45.221:3000/api';
+  // static const String baseUrl = 'http://192.168.100.146:3000/api';
+  static  String baseUrl = dotenv.env['BASE_URL'] ?? 'http://default.url';
+ 
 
   // Method for registering a user
   static Future<Map<String, dynamic>> registerUser(
@@ -48,7 +50,7 @@ class ApiService {
         headers: {'Content-Type': 'application/json'},
         body: json.encode({'email': email, 'password': password}),
       );
-
+ 
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = json.decode(response.body);
         final userId = data['_id'] ?? '';
@@ -228,7 +230,6 @@ class ApiService {
   Future<CommentCount> getCommentCount(String postId) async {
     final response = await http
         .get(Uri.parse('$baseUrl/comments/posts/$postId/comments/count'));
-
     if (response.statusCode == 200) {
       // If the server returns a 200 OK response, parse the data
       return CommentCount.fromJson(json.decode(response.body));

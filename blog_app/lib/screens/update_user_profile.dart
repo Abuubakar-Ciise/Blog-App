@@ -2,7 +2,9 @@ import 'dart:io';
 import 'package:blog_app/controllers/PostController.dart';
 import 'package:blog_app/services/api_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -26,6 +28,8 @@ class UpdateProfileScreen extends StatefulWidget {
 }
 
 class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
+    static  String baseUrl = dotenv.env['BASE_URL_IMAGES'] ?? 'http://default.url';
+
   final _formKey = GlobalKey<FormState>();
   String _username = '';
   String _bio = '';
@@ -41,46 +45,53 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   }
 
   Future<void> _updateProfile() async {
-    if (_formKey.currentState?.validate() ?? false) {
-      setState(() {
-        _isLoading = true;
-      });
+  if (_formKey.currentState?.validate() ?? false) {
+    setState(() {
+      _isLoading = true;
+    });
 
-      final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString('token') ?? '';
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token') ?? '';
 
-      try {
-        String? imagePath;
-        if (_profileImage != null) {
-          imagePath = _profileImage!.path;
-        }
-
-        final response = await ApiService().updateUserProfile(
-          widget.userId,
-          _username,
-          _bio,
-          imagePath ?? widget.profilePic, // Use existing image if no new image selected
-        );
-
-        if (response != null) {
-          Get.snackbar('Success', 'Profile updated successfully!', 
-              snackPosition: SnackPosition.BOTTOM);
-          widget.postController.fetchPosts();
-          Navigator.pop(context, true); // Return to previous screen with refresh
-        } else {
-          Get.snackbar('Error', 'Failed to update profile', 
-              snackPosition: SnackPosition.BOTTOM);
-        }
-      } catch (e) {
-        Get.snackbar('Error', 'Failed to update profile: $e', 
-            snackPosition: SnackPosition.BOTTOM);
-      } finally {
-        setState(() {
-          _isLoading = false;
-        });
+    try {
+      String? imagePath;
+      
+      // Use the selected image or the existing image if none is selected
+      if (_profileImage != null) {
+        imagePath = _profileImage!.path;  // New image path
+        print("wwwwwwwwww$imagePath");
+      } else {
+        imagePath = null; // Keep old profile picture if no new one is selected
+        print("wwwwwwwwww$imagePath");
       }
+
+      final response = await ApiService().updateUserProfile(
+        widget.userId,
+        _username,
+        _bio,
+        imagePath?? '', // Send the appropriate image path (either new or old)
+      );
+
+      if (response != null) {
+        Get.snackbar('Success', 'Profile updated successfully!', 
+            snackPosition: SnackPosition.BOTTOM);
+        widget.postController.fetchPosts();
+        Navigator.pop(context, true); // Return to previous screen with refresh
+      } else {
+        Get.snackbar('Error', 'Failed to update profile', 
+            snackPosition: SnackPosition.BOTTOM);
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to update profile: $e', 
+          snackPosition: SnackPosition.BOTTOM);
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
+}
+
 
   Future<void> _pickImage() async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
@@ -131,7 +142,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     if (_profileImage != null) {
       return FileImage(File(_profileImage!.path));
     } else if (widget.profilePic.isNotEmpty) {
-      return NetworkImage("http://192.168.100.146:3000${widget.profilePic}");
+      // return NetworkImage("http://192.168.100.146:3000${widget.profilePic}");
+      return NetworkImage("$baseUrl${widget.profilePic}");
     }
     return null;
   }

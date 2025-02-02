@@ -1,6 +1,7 @@
 import 'package:blog_app/model/post_model.dart';
 import 'package:blog_app/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import '../services/api_service.dart';
 import '../controllers/comment_controller.dart';
@@ -17,6 +18,8 @@ class PostDetailsScreen extends StatefulWidget {
 
 class _PostDetailsScreenState extends State<PostDetailsScreen> {
   final ScrollController _scrollController = ScrollController();
+    static  String baseUrl = dotenv.env['BASE_URL_IMAGES'] ?? 'http://default.url';
+
 
   @override
   void initState() {
@@ -65,7 +68,8 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                           ? ClipRRect(
                               borderRadius: BorderRadius.circular(8),
                               child: Image.network(
-                                "http://192.168.100.146:3000${post.image}",
+                                // "http://192.168.100.146:3000${post.image}",
+                                "$baseUrl${post.image}",
                                 height: 250,
                                 width: double.infinity,
                                 fit: BoxFit.cover,
@@ -140,7 +144,8 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                                           },
                                           child: CircleAvatar(
                                             backgroundImage: NetworkImage(
-                                                "http://192.168.100.146:3000${comment.userProfilePicture}"),
+                                                // "http://192.168.100.146:3000${comment.userProfilePicture}"),
+                                                "$baseUrl${comment.userProfilePicture}"),
                                           ),
                                         ),
                                         title: GestureDetector(
@@ -153,18 +158,35 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                                         subtitle: Text(comment.content),
                                         trailing: currentUserId ==
                                                 comment.userId
-                                            ? IconButton(
-                                                icon: const Icon(Icons.delete,
-                                                    color: Colors.red),
-                                                onPressed: () async {
-                                                  bool confirmDelete =
-                                                      await _showDeleteDialog();
-                                                  if (confirmDelete) {
-                                                    await _deleteComment(
-                                                        comment.id,
-                                                        commentController);
+                                            ? PopupMenuButton<String>(
+                                                icon: const Icon(
+                                                    Icons.more_vert,
+                                                    color: Colors.grey),
+                                                onSelected: (value) async {
+                                                  if (value == 'delete') {
+                                                    bool confirmDelete =
+                                                        await _showDeleteDialog();
+                                                    if (confirmDelete) {
+                                                      await _deleteComment(
+                                                          comment.id,
+                                                          commentController);
+                                                    }
                                                   }
                                                 },
+                                                itemBuilder:
+                                                    (BuildContext context) => [
+                                                  const PopupMenuItem<String>(
+                                                    value: 'delete',
+                                                    child: Row(
+                                                      children: [
+                                                        Icon(Icons.delete,
+                                                            color: Colors.red),
+                                                        SizedBox(width: 8),
+                                                        Text('Delete Comment'),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
                                               )
                                             : null,
                                       ),
