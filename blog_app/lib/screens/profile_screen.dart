@@ -6,6 +6,7 @@ import 'package:blog_app/screens/post_card_user_profile.dart';
 import 'package:blog_app/screens/update_user_profile.dart';
 import 'package:blog_app/services/api_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,6 +14,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 class UserProfileScreen extends StatelessWidget {
   final String userId;
   final PostController postController = Get.put(PostController());
+    static  String baseUrl = dotenv.env['BASE_URL_IMAGES'] ?? 'http://default.url';
+
   UserProfileScreen({super.key, required this.userId});
 
   Future<String> _getCurrentUserId() async {
@@ -201,7 +204,8 @@ class UserProfileScreen extends StatelessWidget {
             radius: 42,
             backgroundColor: Colors.grey.shade200,
             backgroundImage: user['profilePic'] != null
-                ? NetworkImage("http://192.168.100.146:3000${user['profilePic']}")
+                // ? NetworkImage("http://192.168.100.146:3000${user['profilePic']}")
+                ? NetworkImage("$baseUrl${user['profilePic']}")
                 : null,
             child: user['profilePic'] == null
                 ? const Icon(Icons.person, size: 40, color: Colors.white)

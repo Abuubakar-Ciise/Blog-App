@@ -19,7 +19,6 @@ class AuthController extends GetxController {
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
       );
-      
     } else {
       Fluttertoast.showToast(
         msg: 'Registration successful!',

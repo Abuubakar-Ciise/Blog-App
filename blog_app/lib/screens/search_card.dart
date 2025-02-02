@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../controllers/PostController.dart';
@@ -15,10 +16,12 @@ class SearchCard extends StatelessWidget {
     required this.getToken,
     required this.currentUserId,
   });
+    static  String baseUrl = dotenv.env['BASE_URL_IMAGES'] ?? 'http://default.url';
 
   @override
   Widget build(BuildContext context) {
     final PostController postController = Get.find();
+    
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,7 +44,8 @@ class SearchCard extends StatelessWidget {
                   Row(
                     children: [
                       CircleAvatar(
-                        backgroundImage: NetworkImage("http://192.168.100.146:3000${post.userProfilePicture}"),
+                        // backgroundImage: NetworkImage("http://192.168.100.146:3000${post.userProfilePicture}"),
+                        backgroundImage: NetworkImage("$baseUrl${post.userProfilePicture}"),
                         radius: 22,
                       ),
                       const SizedBox(width: 12),
@@ -85,7 +89,8 @@ class SearchCard extends StatelessWidget {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(12),
                       child: Image.network(
-                        "http://192.168.100.146:3000${post.image}",
+                        // "http://192.168.100.146:3000${post.image}",
+                        "$baseUrl${post.image}",
                         height: 220,
                         width: double.infinity,
                         fit: BoxFit.cover,

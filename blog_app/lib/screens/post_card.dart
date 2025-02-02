@@ -1,5 +1,6 @@
 import 'package:blog_app/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../controllers/PostController.dart';
@@ -16,11 +17,14 @@ class PostCard extends StatelessWidget {
     required this.getToken,
     required this.currentUserId,
   });
+    static  String baseUrl = dotenv.env['BASE_URL_IMAGES'] ?? 'http://default.url';
+    
 
   @override
   Widget build(BuildContext context) {
     final PostController postController = Get.find();
-
+    print("BaseUrl ${baseUrl}");
+    
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       shape: RoundedRectangleBorder(
@@ -43,7 +47,7 @@ class PostCard extends StatelessWidget {
                   },
                   child: CircleAvatar(
                     backgroundImage: NetworkImage(
-                        "http://192.168.100.146:3000${post.userProfilePicture}"),
+                        "$baseUrl${post.userProfilePicture}"),
                     radius: 22,
                   ),
                 ),
@@ -113,7 +117,9 @@ class PostCard extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(12),
                   child: Image.network(
-                    "http://192.168.100.146:3000${post.image}",
+                    // "http://192.168.100.146:3000${post.image}",
+                    "$baseUrl${post.image}",
+                    
                     height: 200, // Adjust height for smaller card
                     width: double.infinity,
                     fit: BoxFit.cover,

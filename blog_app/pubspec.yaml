@@ -48,6 +48,7 @@ dependencies:
   web_socket_channel: ^2.2.0
   intl: ^0.20.1
   lottie: ^3.3.1
+  flutter_dotenv: ^5.2.1
 
 dev_dependencies:
   flutter_test:
@@ -70,6 +71,9 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  assets:
+    - assets/animations/no_results.json
+    - .env
 
   # To add assets to your application, add an assets section, like this:
   # assets:

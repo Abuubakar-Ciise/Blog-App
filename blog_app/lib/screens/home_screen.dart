@@ -3,6 +3,7 @@ import 'package:blog_app/screens/SearchScreen%20.dart';
 import 'package:blog_app/screens/post_card.dart';
 import 'package:blog_app/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/api_service.dart'; 
@@ -15,6 +16,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final PostController postController = Get.put(PostController());
+    static  String baseUrl = dotenv.env['BASE_URL_IMAGES'] ?? 'http://default.url';
+
   int _selectedIndex = 0;
   String userId = "";
 
@@ -104,7 +107,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         backgroundColor: Colors.grey.shade300,
                         backgroundImage: user['profilePic'] != null
                             ? NetworkImage(
-                                "http://192.168.100.146:3000${user['profilePic']}")
+                                "$baseUrl${user['profilePic']}"
+                                // "http://192.168.100.146:3000${user['profilePic']}"
+                                )
                             : null,
                         child: user['profilePic'] == null
                             ? const Icon(Icons.person,
